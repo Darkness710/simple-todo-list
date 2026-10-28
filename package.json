@@ -1,0 +1,13 @@
+{
+  "name": "simple-todo-list",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  
+"scripts": {
+  "dev": "concurrently -k -n BACKEND,FRONTEND \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

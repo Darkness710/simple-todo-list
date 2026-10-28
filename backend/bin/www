@@ -1,0 +1,56 @@
+#!/usr/bin/env node
+
+const http = require('http');
+const app = require('../app');
+const { connectDB } = require('../config/database');
+
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+async function startServer() {
+  try {
+    await connectDB();
+
+    const server = http.createServer(app);
+
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', () => {
+      console.log(`Server berjalan di http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error('Gagal memulai server:', error.message);
+    process.exit(1);
+  }
+}
+
+function normalizePort(value) {
+  const parsedPort = parseInt(value, 10);
+
+  if (Number.isNaN(parsedPort)) return value;
+  if (parsedPort >= 0) return parsedPort;
+
+  return false;
+}
+
+function onError(error) {
+  if (error.syscall !== 'listen') throw error;
+
+  const bind = typeof port === 'string'
+    ? `Pipe ${port}`
+    : `Port ${port}`;
+
+  if (error.code === 'EACCES') {
+    console.error(`${bind} membutuhkan hak akses lebih tinggi`);
+    process.exit(1);
+  }
+
+  if (error.code === 'EADDRINUSE') {
+    console.error(`${bind} sudah digunakan`);
+    process.exit(1);
+  }
+
+  throw error;
+}
+
+startServer();
