@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const { getDB } = require('./config/database');
+const todoRoutes = require('./routes/todoRoutes');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use('/api/todos', todoRoutes);
 
 app.get('/api/health', (req, res) => {
   res.json({
