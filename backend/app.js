@@ -4,15 +4,21 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 const indexRouter = require('./routes/index');
 const { getDB } = require('./config/database');
 const todoRoutes = require('./routes/todoRoutes');
 
 const app = express();
 
-app.use(cors({ origin: 'https://apitodo.shiddiqsm.my.id' }));
+app.use(cors({ origin: 'http://localhost:5173' }));
 
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.get('/api-docs.json', (req, res) => res.json(swaggerSpec));
+
 app.use('/api/todos', todoRoutes);
 
 app.get('/api/health', (req, res) => {
